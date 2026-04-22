@@ -1,6 +1,0 @@
-FROM base
-WORKDIR /app
-COPY . /app
-RUN echo "Build successful"
-ENV NAME=Docksmith
-CMD ["python3","app.py"]
