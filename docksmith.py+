@@ -1,0 +1,52 @@
+import os
+import argparse
+from builder.parser import parse_docksmithfile
+
+BASE_DIR = os.path.expanduser("~/.docksmith")
+
+def init_storage():
+    os.makedirs(BASE_DIR + "/images", exist_ok=True)
+    os.makedirs(BASE_DIR + "/layers", exist_ok=True)
+    os.makedirs(BASE_DIR + "/cache", exist_ok=True)
+
+def main():
+
+    parser = argparse.ArgumentParser()
+
+    sub = parser.add_subparsers(dest="command")
+
+    sub.add_parser("images")
+
+    build = sub.add_parser("build")
+    build.add_argument("-t")
+    build.add_argument("context")
+
+    run = sub.add_parser("run")
+    run.add_argument("image")
+
+    rmi = sub.add_parser("rmi")
+    rmi.add_argument("image")
+
+    args = parser.parse_args()
+
+    if args.command == "images":
+        print("Listing images")
+
+    elif args.command == "build":
+
+        instructions = parse_docksmithfile(args.context)
+
+        print("Parsed instructions:")
+
+        for inst in instructions:
+            print(inst)
+
+    elif args.command == "run":
+        print("Running image:", args.image)
+
+    elif args.command == "rmi":
+        print("Removing image:", args.image)
+
+if __name__ == "__main__":
+    init_storage()
+    main()
